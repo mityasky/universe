@@ -1,0 +1,1319 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<meta property="og:title" content="Твоя Вселенная | Научный калькулятор личности">
+<meta property="og:description" content="Узнай своё имя в ДНК, возраст в планковских временах, световой след и атомный состав.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ваш-домен.infinityfreeapp.com/">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:locale:alternate" content="en_US">
+    
+    <!-- Двуязычный Title и Description для лучшей индексации -->
+    <title>Your Universe | Твоя Вселенная - Scientific Personality Calculator</title>
+    <meta name="description" content="Discover your name in DNA, age in Planck times, light trail, and atomic composition. / Узнай своё имя в ДНК, возраст в планковских временах и атомный состав.">
+    <meta name="keywords" content="DNA calculator, age in universe, entropy, science, space, biology, physics, ДНК калькулятор, возраст во вселенной, энтропия">
+    <meta name="author" content="Your Universe">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Hreflang теги для указания поисковикам на двуязычность -->
+    <link rel="alternate" hreflang="ru" href="https://your-domain.infinityfreeapp.com/" />
+    <link rel="alternate" hreflang="en" href="https://your-domain.infinityfreeapp.com/" />
+    <link rel="alternate" hreflang="x-default" href="https://your-domain.infinityfreeapp.com/" />
+    
+    <!-- Open Graph для красивых ссылок в соцсетях -->
+    <meta property="og:title" content="Your Universe | Твоя Вселенная">
+    <meta property="og:description" content="Scientific personality calculator: DNA, age in space, entropy, and atomic composition.">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:locale:alternate" content="en_US">
+    
+    <!-- Фавиконка (встроенная SVG для максимальной скорости загрузки) -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%236366f1'/><stop offset='100%25' stop-color='%23ec4899'/></linearGradient></defs><circle cx='50' cy='50' r='45' fill='url(%23g)'/><text x='50' y='68' font-size='45' text-anchor='middle' fill='white' font-family='sans-serif'>∞</text></svg>">
+    
+    <style>
+        :root {
+            --bg-primary: #050510;
+            --bg-secondary: #0f0f23;
+            --bg-card: rgba(22, 33, 62, 0.7);
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0c0;
+            --accent: #6366f1;
+            --accent-glow: rgba(99, 102, 241, 0.4);
+            --success: #10b981;
+            --warning: #f59e0b;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        #glitter-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        header {
+            text-align: center;
+            padding: 60px 0 40px;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            background: linear-gradient(135deg, var(--accent), #ec4899, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+        
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .lang-switch {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            display: flex;
+            gap: 8px;
+            background: var(--bg-card);
+            padding: 4px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+        }
+        
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        
+        .lang-btn:hover { color: var(--text-primary); }
+        .lang-btn.active {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 4px 12px var(--accent-glow);
+        }
+        
+        .input-section {
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 24px;
+            margin: 40px 0;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        input[type="text"], input[type="date"], input[type="number"] {
+            width: 100%;
+            padding: 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+            transition: all 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px var(--accent-glow);
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            color: white;
+            border: none;
+            padding: 18px 32px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px var(--accent-glow);
+        }
+        
+        .btn:active { transform: translateY(0); }
+        
+        .loader {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+        .loader.active { display: block; }
+        .spinner {
+            width: 50px; height: 50px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .results {
+            display: none;
+            margin-top: 40px;
+        }
+        .results.active { display: block; }
+        
+        .result-card {
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            margin-bottom: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            transform: translateY(30px);
+            animation: slideUp 0.6s ease-out forwards;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(99, 102, 241, 0.15);
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+        
+        @keyframes slideUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .result-card h2 {
+            color: var(--accent);
+            margin-bottom: 24px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 16px;
+        }
+        
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+        }
+        
+        .result-item {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 3px solid var(--accent);
+            transition: background 0.3s;
+        }
+        
+        .result-item:hover { background: rgba(0, 0, 0, 0.4); }
+        
+        .result-label {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .result-value {
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .result-desc {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 8px;
+            font-family: 'Segoe UI', sans-serif;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+        
+        .dna-sequence {
+            font-family: 'Courier New', monospace;
+            background: rgba(16, 185, 129, 0.1);
+            padding: 16px;
+            border-radius: 8px;
+            word-break: break-all;
+            color: var(--success);
+            font-size: 1rem;
+            margin-top: 12px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 60px 0 40px;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border);
+            margin-top: 60px;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .lang-switch { 
+                position: static; 
+                justify-content: center; 
+                margin-bottom: 20px;
+                width: fit-content;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            header { padding-top: 20px; }
+        }
+		
+        .beaver-easter-egg {
+            display: inline-block;
+            width: 48px;
+            height: 48px;
+            margin-left: 10px;
+            vertical-align: middle;
+            opacity: 0;
+            transform: scale(0.5) translateY(10px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+        }
+        .beaver-easter-egg.show {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <canvas id="glitter-canvas"></canvas>
+
+    <div class="container">
+        <header>
+            <div class="lang-switch">
+                <button class="lang-btn active" onclick="switchLang('ru')" aria-label="Switch to Russian">RU</button>
+                <button class="lang-btn" onclick="switchLang('en')" aria-label="Switch to English">EN</button>
+            </div>
+            <h1 data-i18n="title" title="Нажми на меня 😉" style="cursor: pointer;">Твоя Вселенная</h1>
+            <p class="subtitle" data-i18n="subtitle">Научный калькулятор: от атомов до галактик</p>
+        </header>
+        
+        <div class="input-section">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="name" data-i18n="nameLabel">Ваше имя</label>
+                    <input type="text" id="name" placeholder="Например: Александр" data-i18n-placeholder="namePlaceholder">
+                </div>
+                <div class="form-group">
+                    <label for="birthdate" data-i18n="birthLabel">Дата рождения</label>
+                    <input type="date" id="birthdate">
+                </div>
+                <div class="form-group">
+                    <label for="weight" data-i18n="weightLabel">Ваш вес (кг)</label>
+                    <input type="number" id="weight" placeholder="Например: 70" min="1" max="500" step="0.1" data-i18n-placeholder="weightPlaceholder">
+                </div>
+            </div>
+            <button class="btn" onclick="startCalculation()" data-i18n="calculateBtn">Рассчитать мою вселенную</button>
+        </div>
+        
+        <div class="loader" id="loader">
+            <div class="spinner"></div>
+            <p data-i18n="calculating">Анализ квантовых данных и секвенирование...</p>
+        </div>
+        
+        <div class="results" id="results">
+            <div class="result-card" style="animation-delay: 0.1s">
+                <h2>🧬 <span data-i18n="dnaTitle">Ваше имя в ДНК</span></h2>
+                <div id="dnaResults"></div>
+            </div>
+            
+            <div class="result-card" style="animation-delay: 0.2s">
+                <h2>⏳ <span data-i18n="ageTitle">Возраст в масштабах Вселенной</span></h2>
+                <div id="ageResults" class="result-grid"></div>
+            </div>
+			
+		    <div class="result-card" style="animation-delay: 0.6s">
+                <h2>🌌 <span data-i18n="cosmicTitle">Космические факты о вас</span></h2>
+                <div id="cosmicFactsResults" class="result-grid"></div>
+            </div>
+			
+            <div class="result-card" style="animation-delay: 0.3s">
+                <h2>💡 <span data-i18n="lightTitle">Ваш световой след</span></h2>
+                <div id="lightResults" class="result-grid"></div>
+            </div>
+            
+            <div class="result-card" style="animation-delay: 0.4s">
+                <h2>⚛️ <span data-i18n="atomTitle">Атомный состав</span></h2>
+                <div id="atomResults" class="result-grid"></div>
+            </div>
+            
+            <div class="result-card" style="animation-delay: 0.5s">
+                <h2>🔥 <span data-i18n="entropyTitle">Произведённая энтропия</span></h2>
+                <div id="entropyResults" class="result-grid"></div>
+            </div>
+			
+            <div class="result-card" style="animation-delay: 0.7s">
+                <h2>🌍 <span data-i18n="earthTimeTitle">Земля и время</span></h2>
+                <div id="earthTimeResults" class="result-grid"></div>
+            </div>
+        </div>
+        
+        <footer>
+            <p data-i18n="footer">© 2026 Твоя Вселенная. Расчёты основаны на реальных физических и биологических константах.</p>
+        </footer>
+    </div>
+    
+    <script>
+        function initGlitterCanvas() {
+            const canvas = document.getElementById('glitter-canvas');
+            const ctx = canvas.getContext('2d');
+            let width = window.innerWidth;
+            let height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+
+            // Оптимизация для слабых устройств (режим энергосбережения)
+            const isLowPower = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const props = {
+                particleCount: isLowPower ? 300 : 1000,
+                color1: "#ffffff",
+                color2: "#E700FF",
+                color3: "#F30000",
+                speed: 1,
+                density: 100,
+                starSize: 0,
+                focalDepth: 4,
+                turbulence: 6,
+                brightness: 100,
+                glitterIntensity: 10,
+                trailAmount: 100,
+                reverse: false
+            };
+
+            function parseColor(input) {
+                if (!input) return [255, 255, 255, 1];
+                const s = input.trim();
+                if (s.startsWith("#")) {
+                    let hex = s.slice(1);
+                    if (hex.length === 3) hex = hex.split("").map((c) => c + c).join("");
+                    const num = parseInt(hex, 16);
+                    return [(num >> 16) & 255, (num >> 8) & 255, num & 255, 1];
+                }
+                const m = s.match(/rgba?\(([^)]+)\)/i);
+                if (m) {
+                    const parts = m[1].split(",").map((p) => parseFloat(p.trim()));
+                    return [parts[0] || 0, parts[1] || 0, parts[2] || 0, parts[3] == null ? 1 : parts[3]];
+                }
+                return [255, 255, 255, 1];
+            }
+
+            const colors = [parseColor(props.color1), parseColor(props.color2), parseColor(props.color3)];
+            const rgbStrs = [
+                `rgb(${colors[0][0]}, ${colors[0][1]}, ${colors[0][2]})`,
+                `rgb(${colors[1][0]}, ${colors[1][1]}, ${colors[1][2]})`,
+                `rgb(${colors[2][0]}, ${colors[2][1]}, ${colors[2][2]})`
+            ];
+
+            const stars = [];
+            let elapsed = 0;
+            let lastT = performance.now();
+
+            const makeStar = () => ({ x: 0, y: 0, z: 0, px: NaN, py: NaN, seed: 0, vmul: 1, colorIdx: 0, flashUntil: 0, nextFlash: 0 });
+
+            const resetStar = (s, initial = false) => {
+                const angle = Math.random() * Math.PI * 2;
+                const radius = (0.2 + Math.random() * 0.8) * (props.density / 15);
+                s.x = Math.cos(angle) * radius;
+                s.y = Math.sin(angle) * radius;
+                if (props.reverse) {
+                    s.z = initial ? props.focalDepth / 100 + Math.random() * (1 - props.focalDepth / 100) : props.focalDepth / 100;
+                } else {
+                    s.z = initial ? Math.random() : 1.0;
+                }
+                s.px = NaN; s.py = NaN;
+                s.seed = Math.random() * 1000;
+                s.vmul = 0.6 + Math.random() * 0.8;
+                s.colorIdx = Math.floor(Math.random() * 3);
+                s.flashUntil = 0;
+                s.nextFlash = elapsed + 1 + Math.random() * 4 * (1 / Math.max(0.0001, props.glitterIntensity * 0.1));
+            };
+
+            for (let i = 0; i < props.particleCount; i++) {
+                const s = makeStar();
+                resetStar(s, true);
+                stars.push(s);
+            }
+
+            window.addEventListener('resize', () => {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                canvas.width = width;
+                canvas.height = height;
+            });
+
+            const drawFrame = (deltaSec) => {
+                const stepZ = props.speed * 0.0008;
+                const focalDepth = props.focalDepth / 100;
+                const starScale = props.starSize * 0.15;
+                const turbulence = props.turbulence * 0.2;
+                const glitter = props.glitterIntensity * 0.1;
+                const brightness = Math.min(1, props.brightness / 100);
+                const trail = props.trailAmount / 100;
+
+                const cx = width / 2;
+                const cy = height / 2;
+                const projScale = Math.min(width, height) * 0.9;
+                const dt = Math.max(0.001, Math.min(0.1, deltaSec)) * 60;
+
+                const keep = Math.pow(Math.min(0.98, Math.max(0, trail)), dt);
+                const trailAlpha = Math.max(0.02, 1 - keep);
+                
+                ctx.globalAlpha = 1;
+                ctx.globalCompositeOperation = "destination-out";
+                ctx.fillStyle = `rgba(0, 0, 0, ${trailAlpha})`;
+                ctx.fillRect(0, 0, width, height);
+
+                ctx.globalCompositeOperation = "lighter";
+
+                for (let i = 0; i < stars.length; i++) {
+                    const s = stars[i];
+                    const vz = stepZ * s.vmul * dt;
+                    
+                    if (props.reverse) {
+                        s.z += vz;
+                        if (s.z >= 1.0) { resetStar(s); continue; }
+                    } else {
+                        s.z -= vz;
+                        if (s.z <= focalDepth) { resetStar(s); continue; }
+                    }
+
+                    let tx = s.x, ty = s.y;
+                    if (turbulence > 0) {
+                        const t = elapsed * 1.2 + s.seed;
+                        const amp = turbulence * (1 - s.z) * 0.25;
+                        tx += Math.sin(t + s.seed) * amp;
+                        ty += Math.cos(t * 1.13 + s.seed * 0.7) * amp;
+                    }
+
+                    const persp = focalDepth / Math.max(s.z, 0.0001);
+                    const sx = cx + tx * persp * projScale;
+                    const sy = cy + ty * persp * projScale;
+
+                    if (!props.reverse && (sx < -20 || sx > width + 20 || sy < -20 || sy > height + 20)) {
+                        resetStar(s); continue;
+                    }
+
+                    let flashMult = 1;
+                    if (glitter > 0) {
+                        if (elapsed >= s.nextFlash && s.flashUntil < elapsed) {
+                            s.flashUntil = elapsed + 0.04 + Math.random() * 0.07;
+                            s.nextFlash = elapsed + 1 + Math.random() * 4 * (1 / Math.max(0.0001, glitter));
+                        }
+                        if (elapsed <= s.flashUntil) flashMult = 1 + 2.5 * glitter;
+                    }
+
+                    const sizePersp = Math.min(2.5, (focalDepth / Math.max(s.z, 0.0001)) * 0.6);
+                    const baseR = Math.max(0.25, starScale * (0.4 + sizePersp));
+                    const maxR = 1 + starScale * 2.5;
+                    const r = Math.min(baseR * flashMult, maxR);
+
+                    const lifeT = props.reverse ? s.z : 1 - s.z;
+                    const fadeIn = props.reverse ? Math.min(1, (s.z - focalDepth) / (1 - focalDepth) / 0.12) : 1;
+                    const a = Math.min(1, props.reverse ? 0.85 - lifeT * 0.6 : lifeT * 0.9 + 0.05) * fadeIn * brightness * (flashMult > 1 ? 1 : 0.85);
+                    const colStr = rgbStrs[s.colorIdx];
+
+                    if (!Number.isNaN(s.px) && !Number.isNaN(s.py)) {
+                        ctx.globalAlpha = a * 0.5;
+                        ctx.strokeStyle = colStr;
+                        ctx.lineWidth = Math.max(0.4, r * 0.4);
+                        ctx.beginPath();
+                        ctx.moveTo(s.px, s.py);
+                        ctx.lineTo(sx, sy);
+                        ctx.stroke();
+                    }
+
+                    ctx.globalAlpha = a;
+                    ctx.fillStyle = colStr;
+                    ctx.fillRect(sx - r, sy - r, r * 2, r * 2);
+
+                    if (flashMult > 1) {
+                        const rf = Math.min(r * 1.4, maxR * 1.4);
+                        ctx.globalAlpha = a * 0.5;
+                        ctx.fillRect(sx - rf, sy - rf, rf * 2, rf * 2);
+                    }
+
+                    s.px = sx; s.py = sy;
+                }
+
+                ctx.globalAlpha = 1;
+                ctx.globalCompositeOperation = "source-over";
+                elapsed += Math.min(0.1, Math.max(0, deltaSec));
+            };
+
+            const loop = (t) => {
+                const deltaSec = (t - lastT) / 1000;
+                lastT = t;
+                drawFrame(deltaSec);
+                requestAnimationFrame(loop);
+            };
+            
+            for (let i = 0; i < 80; i++) drawFrame(1 / 60);
+            requestAnimationFrame(loop);
+        }
+
+        const translations = {
+            ru: {
+                title: "Твоя Вселенная",
+                subtitle: "Научный калькулятор: от атомов до галактик",
+                nameLabel: "Ваше имя",
+                namePlaceholder: "Например: Александр",
+                birthLabel: "Дата рождения",
+                birthTitle: "Выберите дату рождения",
+                weightLabel: "Ваш вес (кг)",
+                weightPlaceholder: "Например: 70",
+                calculateBtn: "Рассчитать мою вселенную",
+                calculating: "Анализ квантовых данных и секвенирование...",
+                dnaTitle: "Ваше имя в ДНК",
+                ageTitle: "Возраст в масштабах Вселенной",
+                lightTitle: "Ваш световой след",
+                atomTitle: "Атомный состав",
+                entropyTitle: "Произведённая энтропия",
+                cosmicTitle: "Космические факты о вас",
+                footer: "© 2026 Твоя Вселенная. Расчёты основаны на реальных физических и биологических константах.",
+                dnaSeq: "Последовательность. Это упрощенная модель на основе хэш-суммы вашего имени, но биологически вы уникальны.",
+                dnaLen: "Длина цепи",
+                dnaMatch: "Наиболее близкий ген",
+                planck: "Планковские времена",
+                planckDesc: "Количество планковских времён, соответствующее вашей жизни",
+                galactic: "Оборотов вокруг центра Галактики",
+                galacticDesc: "«Галактический год» — 225 млн земных лет",
+                carbon: "Периодов полураспада C-14",
+                carbonDesc: "Сколько периодов полураспада C-14 соответствует вашему возрасту",
+                earthOrbits: "Оборотов Земли вокруг Солнца",
+                earthOrbitsDesc: "Столько раз планета сделала круг по орбите (сидерический год)",
+                heartbeats: "Ударов сердца",
+                heartbeatsDesc: "Оценка при среднем пульсе 70 ударов в минуту",
+                issOrbits: "Оборотов МКС вокруг Земли",
+                issOrbitsDesc: "Сколько раз станция облетела планету с момента вашего рождения",
+                lightKm: "Пройдено светом с вашего рождения (км)",
+                lightKmDesc: "Свет от вашего первого вдоха уже улетел на это расстояние",
+                lightYears: "В световых годах",
+                lightMoonTrips: "Путешествий до Луны и обратно",
+                lightMoonTripsDesc: "Сколько раз этот свет мог бы долететь до Луны и вернуться обратно (среднее расстояние)",
+                lightReach: "Граница вашего света",
+                atomsTotal: "Всего атомов в вашем теле",
+                atomsTotalDesc: "Это в миллион раз больше, чем звёзд в наблюдаемой Вселенной",
+                atomsStar: "Создано в недрах умирающих звёзд",
+                atomsStarDesc: "Вы буквально состоите из звёздной пыли",
+                atomsWater: "Молекул воды (H₂O)",
+                atomsWaterDesc: "Вода, которую вы выпили за всю жизнь, постоянно перемешивается",
+                entropyTotal: "Всего энтропии (Дж/К)",
+                entropyTotalDesc: "Ваш личный вклад в хаос Вселенной",
+                entropyIce: "Эквивалент таяния льда (кг)",
+                entropyIceDesc: "Столько льда растопит ваше тело",
+                entropyOcean: "Эквивалент нагрева и испарения воды (л)",
+                entropyOceanDesc: "Столько литров воды превратилось бы в пар",
+                timeDilation: "Гравитационное «омоложение»",
+                timeDilationDesc: "Из-за гравитации Земли время для вас течёт чуть медленнее. За жизнь вы «помолодели» на {x} по сравнению с глубоким космосом (эффект ОТО).",
+                neutrinos: "Солнечных нейтрино сквозь вас",
+                neutrinosDesc: "Оценочное число солнечных нейтрино, пересёкших проекционную площадь тела (~{x}).",
+                earthRotation: "Расстояние из-за вращения Земли",
+                earthRotationDesc: "Из-за вращения планеты вы «проехали» ~{x} расстояний от Земли до Солнца (астрономических единиц).",
+                cosmicSpeed: "Движение относительно CMB",
+                cosmicSpeedDesc: "Оценка движения Солнечной системы относительно реликтового фона (~370 км/с). Путь: ~{x} световых дней.",
+                energyMass: "Энергия покоя массы (E=mc²)",
+                energyDesc: "Теоретический эквивалент энергии покоя в мегатоннах (мощность *Царь-бомбы* около 50 мегатонн).",
+                spaceTravel: "Космический пробег",
+                spaceDesc: "Расстояние, которое вы пролетели вместе с Галактикой.",
+                plutoTripsText: "~{x} путешествий до Плутона",
+                earthTimeTitle: "Земля и время",
+                originalMatter: "Первозданное вещество",
+                originalMatterDesc: "С момента вашего рождения ваше тело обновилось ~{x} раз. Сейчас в вас осталось менее {y}% атомов, с которыми вы родились.",
+                continentalDrift: "Дрейф континентов",
+                continentalDriftDesc: "Вы вместе с тектонической плитой сместились на {x} метров с момента рождения.",
+                dnaLength: "Длина вашей ДНК",
+                dnaLengthDesc: "Если размотать вашу ДНК, она протянется на ~{x} млрд км. Это {y} путешествий до Плутона и обратно."
+            },
+            en: {
+                title: "Your Universe",
+                subtitle: "Scientific personality calculator: from atoms to galaxies",
+                nameLabel: "Your name",
+                namePlaceholder: "e.g., Alexander",
+                birthLabel: "Date of birth",
+                birthTitle: "Select your date of birth",
+                weightLabel: "Your weight (kg)",
+                weightPlaceholder: "e.g., 70",
+                calculateBtn: "Calculate my universe",
+                calculating: "Analyzing quantum data and sequencing...",
+                dnaTitle: "Your name in DNA",
+                ageTitle: "Age in Universe scales",
+                lightTitle: "Your light trail",
+                atomTitle: "Atomic composition",
+                entropyTitle: "Produced entropy",
+                cosmicTitle: "Cosmic facts about you",
+                footer: "© 2026 Your Universe. Calculations based on real physical and biological constants.",
+                dnaSeq: "Sequence. This is a simplified model based on a hash of your name, but biologically you are unique.",
+                dnaLen: "Chain length",
+                dnaMatch: "Closest matching gene",
+                planck: "Planck times",
+                planckDesc: "Number of Planck times corresponding to your life",
+                galactic: "Galactic center orbits",
+                galacticDesc: "A 'galactic year' equals 225 million Earth years",
+                carbon: "Carbon-14 half-lives",
+                carbonDesc: "How many C-14 half-lives correspond to your age",
+                earthOrbits: "Earth orbits around the Sun",
+                earthOrbitsDesc: "How many times our planet completed its orbit (sidereal year)",
+                heartbeats: "Heartbeats",
+                heartbeatsDesc: "Estimate based on an average heart rate of 70 bpm",
+                issOrbits: "ISS orbits around Earth",
+                issOrbitsDesc: "How many times the station circled Earth since your birth",
+                lightKm: "Distance light traveled since your birth (km)",
+                lightKmDesc: "Light from your first breath has already gone this far",
+                lightYears: "In light years",
+                lightMoonTrips: "Trips to the Moon and back",
+                lightMoonTripsDesc: "How many times this light could travel to the Moon and return (average distance)",
+                lightReach: "Your light's frontier",
+                atomsTotal: "Total atoms in your body",
+                atomsTotalDesc: "A million times more than stars in the observable Universe",
+                atomsStar: "Forged in dying stars",
+                atomsStarDesc: "You are literally made of stardust",
+                atomsWater: "Water molecules (H₂O)",
+                atomsWaterDesc: "All the water you ever drank is constantly mixing inside you",
+                entropyTotal: "Total entropy (J/K)",
+                entropyTotalDesc: "Your personal contribution to the Universe's chaos",
+                entropyIce: "Equivalent to melting ice (kg)",
+                entropyIceDesc: "This is how many kilograms of ice your body will melt.",
+                entropyOcean: "Equivalent to heating & vaporizing water (l)",
+                entropyOceanDesc: "So many liters of water would turn into steam",
+                timeDilation: "Gravitational 'time travel'",
+                timeDilationDesc: "Due to Earth's gravity, time flows slightly slower for you. Over your life, you've 'aged' {x} less than in deep space (General Relativity).",
+                neutrinos: "Solar neutrinos through you",
+                neutrinosDesc: "Estimated number of solar neutrinos crossing your body's projected area (~{x}).",
+                earthRotation: "Distance from Earth's rotation",
+                earthRotationDesc: "Due to planetary rotation, you've 'traveled' ~{x} distances from Earth to the Sun (Astronomical Units).",
+                cosmicSpeed: "Motion relative to CMB",
+                cosmicSpeedDesc: "Estimated motion of the Solar System relative to the CMB (~370 km/s). Distance: ~{x} light-days.",
+                energyMass: "Rest mass energy (E=mc²)",
+                energyDesc: "Theoretical rest energy equivalent in megatons (the powerful 'Tsar Bomba' ~50 megatons).",
+                spaceTravel: "Cosmic travel distance",
+                spaceDesc: "Distance you've traveled through space along with the Galaxy.",
+                plutoTripsText: "~{x} trips to Pluto",
+                earthTimeTitle: "Earth and Time",
+                originalMatter: "Primordial matter",
+                originalMatterDesc: "Since your birth, your body has renewed ~{x} times. Less than {y}% of your original atoms remain.",
+                continentalDrift: "Continental drift",
+                continentalDriftDesc: "You've moved {x} meters with your tectonic plate since your birth.",
+                dnaLength: "Your DNA length",
+                dnaLengthDesc: "If uncoiled, your DNA would stretch ~{x} billion km. That's {y} round trips to Pluto."
+            }
+        };
+        
+        let currentLang = localStorage.getItem('preferredLang') || 'ru';
+        
+        function switchLang(lang) {
+            currentLang = lang;
+            localStorage.setItem('preferredLang', lang);
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.toLowerCase() === lang) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) el.textContent = translations[lang][key];
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (translations[lang][key]) el.placeholder = translations[lang][key];
+            });
+            document.documentElement.lang = lang;
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.textContent.toLowerCase() === currentLang) {
+                    btn.classList.add('active');
+                }
+            });
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[currentLang][key]) el.textContent = translations[currentLang][key];
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (translations[currentLang][key]) el.placeholder = translations[currentLang][key];
+            });
+            document.documentElement.lang = currentLang;
+        });
+        
+        const genes = [
+            { ru: "Ген FOXO3 (Долголетие)", en: "FOXO3 Gene (Longevity)", desc_ru: "Вариант связан с исключительным долголетием и защитой клеток от старения.", desc_en: "Variant linked to exceptional longevity and cellular protection." },
+            { ru: "Ген DRD4-7R (Путешественник)", en: "DRD4-7R Gene (Wanderlust)", desc_ru: "«Ген путешественника». Связан с любопытством и миграцией на большие расстояния.", desc_en: "The 'wanderlust gene'. Linked to curiosity and long-distance migration." },
+            { ru: "Ген ACTN3 (Спринтер)", en: "ACTN3 Gene (Sprinter)", desc_ru: "Ген «скоростных мышечных волокон». Даёт преимущество во взрывных нагрузках.", desc_en: "The 'speed muscle fiber' gene. Advantage in explosive activities." },
+            { ru: "Ген DEC2 (Короткий сон)", en: "DEC2 Gene (Short Sleeper)", desc_ru: "Позволяет полноценно высыпаться за 4-5 часов в сутки. Редкая мутация (~1%).", desc_en: "Allows full rest on just 4-5 hours of sleep. Rare mutation (~1%)." },
+            { ru: "Ген LCT (Усвоение лактозы)", en: "LCT Gene (Lactose Tolerance)", desc_ru: "Позволяет пить молоко во взрослом возрасте. Мутация скотоводов 10 000 лет назад.", desc_en: "Allows drinking milk as an adult. Mutation from cattle herders 10k years ago." },
+            { ru: "Ген EPAS1 (Высокогорье)", en: "EPAS1 Gene (High Altitude)", desc_ru: "«Тибетский суперген». Позволяет жить на высоте 4000+ метров без горной болезни.", desc_en: "The 'Tibetan supergene'. Allows living above 4000m without altitude sickness." },
+            { ru: "Ген TAS2R38 (Супердегустатор)", en: "TAS2R38 Gene (Supertaster)", desc_ru: "Позволяет чувствовать горький вкус (брокколи, кофе) гораздо интенсивнее.", desc_en: "Senses bitter tastes (broccoli, coffee) much more intensely." },
+            { ru: "Ген ACE (Выносливость)", en: "ACE Gene (Endurance)", desc_ru: "Определяет предрасположенность к марафонам и длительным нагрузкам.", desc_en: "Predisposition to marathons and endurance sports." },
+            { ru: "Ген BDNF (Память)", en: "BDNF Gene (Memory)", desc_ru: "Фактор роста мозга. Отвечает за обучение и формирование долговременной памяти.", desc_en: "Brain-derived neurotrophic factor. Responsible for learning and long-term memory." },
+            { ru: "Ген COMT (Стрессоустойчивость)", en: "COMT Gene (Stress Response)", desc_ru: "«Ген воина или тревожного». Определяет, как вы справляетесь со стрессом.", desc_en: "The 'warrior vs. worrier' gene. Determines how you handle stress." },
+            { ru: "Ген OCA2 (Цвет глаз)", en: "OCA2 Gene (Eye Color)", desc_ru: "Основной ген, определяющий цвет глаз. У голубоглазых один общий предок.", desc_en: "The main gene controlling eye color. All blue-eyed share a common ancestor." },
+            { ru: "Ген MC1R (Рыжие волосы)", en: "MC1R Gene (Red Hair)", desc_ru: "Определяет рыжий цвет волос, светлую кожу и чувствительность к солнцу.", desc_en: "Determines red hair, fair skin, and sun sensitivity." },
+            { ru: "Ген AMY1 (Любитель крахмала)", en: "AMY1 Gene (Starch Lover)", desc_ru: "Кодирует амилазу слюны. У земледельцев копий этого гена больше.", desc_en: "Codes for salivary amylase. Farming populations have more copies." },
+            { ru: "Ген FUT2 (Микробиом)", en: "FUT2 Gene (Gut Microbiome)", desc_ru: "Определяет группу «секреторов». 20% людей не имеют этого гена.", desc_en: "Determines 'secretor status'. 20% of people lack this gene." },
+            { ru: "Ген CLOCK (Хронотип)", en: "CLOCK Gene (Chronotype)", desc_ru: "Регулирует циркадные ритмы. Определяет, сова вы или жаворонок.", desc_en: "Regulates circadian rhythms. Genetically determines night owl or early bird." },
+            { ru: "Ген ABCC11 (Запах)", en: "ABCC11 Gene (Body Odor)", desc_ru: "Определяет запах пота и тип ушной серы. У 95% азиатов сера сухая.", desc_en: "Determines body odor and earwax type. 95% of East Asians have dry wax." },
+            { ru: "Ген EDAR (Толщина волос)", en: "EDAR Gene (Hair Thickness)", desc_ru: "Восточно-азиатский вариант делает волосы толще, а потовые железы плотнее.", desc_en: "East Asian variant makes hair thicker and sweat glands denser." },
+            { ru: "Ген CYP1A2 (Кофеман)", en: "CYP1A2 Gene (Coffee Metabolism)", desc_ru: "Определяет, как быстро ваш организм расщепляет кофеин.", desc_en: "Determines how fast your body breaks down caffeine." },
+            { ru: "Ген SCN1A (Чувствительность к боли)", en: "SCN1A Gene (Pain Sensitivity)", desc_ru: "Регулирует натриевые каналы в нервных клетках. Влияет на болевой порог.", desc_en: "Regulates sodium channels in nerve cells. Influences pain threshold." },
+            { ru: "Ген SLC6A4 (Серотонин)", en: "SLC6A4 Gene (Serotonin)", desc_ru: "Серотониновый транспортёр. Влияет на устойчивость к стрессу и настроение.", desc_en: "Serotonin transporter. Influences stress resilience and overall mood." },
+            { ru: "Ген APOE (Метаболизм жиров)", en: "APOE Gene (Fat Metabolism)", desc_ru: "Определяет, как вы усваиваете жиры. Вариант ε4 связан с риском Альцгеймера.", desc_en: "Determines fat metabolism. Variant ε4 linked to Alzheimer's risk." },
+            { ru: "Ген SLC24A5 (Пигментация)", en: "SLC24A5 Gene (Skin Pigmentation)", desc_ru: "Один из главных генов светлой кожи у европейцев.", desc_en: "One of the main light-skin genes in Europeans." },
+            { ru: "Ген MAOA (Ген воина)", en: "MAOA Gene (Warrior Gene)", desc_ru: "Кодирует фермент, расщепляющий нейромедиаторы. Связан с реакцией на провокации.", desc_en: "Codes for an enzyme that breaks down neurotransmitters. Linked to provocation response." },
+            { ru: "Ген HBB (Гемоглобин)", en: "HBB Gene (Hemoglobin)", desc_ru: "Определяет структуру гемоглобина. Даёт устойчивость к малярии.", desc_en: "Determines hemoglobin structure. Provides malaria resistance." }
+        ];
+        
+        function transliterate(name) {
+            const map = {
+                'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'yo', 'ж': 'zh', 'з': 'z', 'и': 'i',
+                'й': 'y', 'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o', 'п': 'p', 'р': 'r', 'с': 's', 'т': 't',
+                'у': 'u', 'ф': 'f', 'х': 'kh', 'ц': 'ts', 'ч': 'ch', 'ш': 'sh', 'щ': 'sch', 'ъ': '', 'ы': 'y', 'ь': '',
+                'э': 'e', 'ю': 'yu', 'я': 'ya', ' ': '-'
+            };
+            return name.toLowerCase().split('').map(char => map[char] !== undefined ? map[char] : char).join('');
+        }
+        
+        function getGeneByName(name) {
+            const latinName = transliterate(name);
+            let hash = 0;
+            for (let i = 0; i < latinName.length; i++) {
+                hash = ((hash << 5) - hash) + latinName.charCodeAt(i);
+                hash = hash & hash;
+            }
+            return genes[Math.abs(hash) % genes.length];
+        }
+        
+        function nameToDNA(name) {
+            const latinName = transliterate(name);
+            const mapping = {
+                'a':'AT','b':'CG','c':'GC','d':'TA','e':'AT','f':'CG','g':'GC','h':'TA',
+                'i':'AT','j':'CG','k':'GC','l':'TA','m':'AT','n':'CG','o':'GC','p':'TA',
+                'q':'AT','r':'CG','s':'GC','t':'TA','u':'AT','v':'CG','w':'GC','x':'TA',
+                'y':'AT','z':'CG', '-':'--'
+            };
+            let dna = '';
+            for (let char of latinName) {
+                dna += mapping[char] || 'NN';
+            }
+            return dna;
+        }
+        
+        function animateDNA(targetDNA, elementId) {
+            const el = document.getElementById(elementId);
+            const chars = 'ATGC';
+            let iterations = 0;
+            const interval = setInterval(() => {
+                el.innerText = targetDNA.split('').map((letter, index) => {
+                    if (index < iterations) return targetDNA[index];
+                    return chars[Math.floor(Math.random() * 4)];
+                }).join('');
+                if (iterations >= targetDNA.length) clearInterval(interval);
+                iterations += 1/2;
+            }, 30);
+        }
+        
+        function formatNumber(value, isExponential) {
+            const locale = currentLang === 'ru' ? 'ru-RU' : 'en-US';
+            if (isExponential || Math.abs(value) >= 1e6 || (Math.abs(value) > 0 && Math.abs(value) < 0.01)) {
+                return value.toExponential(2);
+            }
+            return value.toLocaleString(locale, { maximumFractionDigits: 2 });
+        }
+
+        function animateValue(obj, start, end, duration, isExponential = false, suffix = '') {
+            const forceFull = obj.getAttribute('data-full') === 'true';
+            const locale = currentLang === 'ru' ? 'ru-RU' : 'en-US';
+            let startTimestamp = null;
+            
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const easeProgress = 1 - Math.pow(1 - progress, 3);
+                const current = start + (end - start) * easeProgress;
+                
+                if (forceFull) {
+                    obj.innerHTML = Math.floor(current).toLocaleString(locale) + suffix;
+                } else {
+                    obj.innerHTML = formatNumber(current, isExponential) + suffix;
+                }
+                
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                } else {
+                    if (forceFull) {
+                        obj.innerHTML = Math.floor(end).toLocaleString(locale) + suffix;
+                    } else {
+                        obj.innerHTML = formatNumber(end, isExponential) + suffix;
+                    }
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+        
+        function startCalculation() {
+            const name = document.getElementById('name').value.trim();
+            const birthdate = document.getElementById('birthdate').value;
+            
+            if (!name || !birthdate) {
+                alert(currentLang === 'ru' ? 'Пожалуйста, заполните имя и дату рождения' : 'Please fill in your name and birth date');
+                return;
+            }
+            
+            document.getElementById('results').classList.remove('active');
+            document.getElementById('loader').classList.add('active');
+            
+            setTimeout(() => {
+                calculate(name, birthdate);
+                document.getElementById('loader').classList.remove('active');
+                document.getElementById('results').classList.add('active');
+                document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 1500);
+        }
+        
+        function calculate(name, birthdate) {
+            const t = translations[currentLang];
+            const now = new Date();
+            
+            const [year, month, day] = birthdate.split('-').map(Number);
+            const birth = new Date(year, month - 1, day);
+            const ageSeconds = (now.getTime() - birth.getTime()) / 1000;
+            const ageYears = ageSeconds / (365.25 * 24 * 3600);
+            
+            const inputWeight = parseFloat(document.getElementById('weight').value);
+            let effectiveWeight = 70;
+            let waterPercent = 0.6;
+
+            if (!isNaN(inputWeight) && inputWeight > 0) {
+                effectiveWeight = inputWeight;
+                if (ageYears < 1) waterPercent = 0.75;
+                else if (ageYears < 10) waterPercent = 0.7;
+                else if (ageYears < 18) waterPercent = 0.65;
+                else waterPercent = 0.6;
+            } else {
+                if (ageYears < 1) {
+                    effectiveWeight = 3.5 + ageYears * 7;
+                    waterPercent = 0.75;
+                } else if (ageYears < 10) {
+                    effectiveWeight = 10.5 + (ageYears - 1) * 2.5;
+                    waterPercent = 0.7;
+                } else if (ageYears < 18) {
+                    effectiveWeight = 33 + (ageYears - 10) * 4;
+                    waterPercent = 0.65;
+                } else {
+                    effectiveWeight = 70;
+                    waterPercent = 0.6;
+                }
+            }
+            
+            const dna = nameToDNA(name);
+            const gene = getGeneByName(name);
+            document.getElementById('dnaResults').innerHTML = `
+                <div class="result-item" style="grid-column: 1 / -1;">
+                    <div class="result-label">${t.dnaSeq}</div>
+                    <div class="dna-sequence" id="dnaDisplay"></div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">${t.dnaLen}</div>
+                    <div class="result-value">${dna.length} <span style="font-size:0.8em; font-weight:400">${currentLang === 'ru' ? 'нуклеотидов' : 'nucleotides'}</span></div>
+                </div>
+                <div class="result-item" style="grid-column: 1 / -1; border-left-color: var(--warning);">
+                    <div class="result-label">${t.dnaMatch}</div>
+                    <div class="result-value" style="color: var(--warning)">${currentLang === 'ru' ? gene.ru : gene.en}</div>
+                    <div class="result-desc">${currentLang === 'ru' ? gene.desc_ru : gene.desc_en}</div>
+                </div>
+            `;
+            setTimeout(() => animateDNA(dna, 'dnaDisplay'), 100);
+            
+            const PLANCK_TIME = 5.391247e-44;
+            const GALACTIC_YEAR_SEC = 225e6 * 365.25 * 24 * 3600;
+            const SIDEREAL_YEAR_SEC = 365.256363004 * 24 * 3600;
+            const AVERAGE_HEART_RATE = 70;
+
+            const planckEnd = ageSeconds / PLANCK_TIME;
+            const galacticEnd = ageSeconds / GALACTIC_YEAR_SEC;
+            const carbonEnd = ageYears / 5730;
+            const earthOrbitsEnd = ageSeconds / SIDEREAL_YEAR_SEC;
+            const heartbeatsEnd = ageSeconds * AVERAGE_HEART_RATE / 60;
+            
+            const issLaunchDate = new Date('1998-11-20T06:40:00Z');
+            const issStartDate = birth > issLaunchDate ? birth : issLaunchDate;
+            const issDaysActive = (now - issStartDate) / (1000 * 60 * 60 * 24);
+            const issOrbitsEnd = issDaysActive * 15.54;
+            
+            let issOrbitsDesc = t.issOrbitsDesc;
+            if (birth <= issLaunchDate) {
+                issOrbitsDesc = currentLang === 'ru' 
+                    ? "Вы родились до запуска МКС (1998 г.). Это количество оборотов с момента её старта." 
+                    : "You were born before the ISS launch (1998). These are orbits since its launch.";
+            }
+            
+            document.getElementById('ageResults').innerHTML = `
+                <div class="result-item">
+                    <div class="result-label">${t.planck}</div>
+                    <div class="result-value" data-target="${planckEnd}" data-exp="true" data-suffix="">0</div>
+                    <div class="result-desc">${t.planckDesc}</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">${t.galactic}</div>
+                    <div class="result-value" data-target="${galacticEnd}" data-exp="true" data-suffix="">0</div>
+                    <div class="result-desc">${t.galacticDesc}</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">${t.carbon}</div>
+                    <div class="result-value">${carbonEnd.toFixed(4)}</div>
+                    <div class="result-desc">${t.carbonDesc}</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">${t.earthOrbits}</div>
+                    <div class="result-value" data-target="${earthOrbitsEnd}" data-exp="false" data-suffix="">0</div>
+                    <div class="result-desc">${t.earthOrbitsDesc}</div>
+                </div>
+                <div class="result-item" style="border-left-color: #ec4899;">
+                    <div class="result-label">${t.heartbeats}</div>
+                    <div class="result-value" data-target="${heartbeatsEnd}" data-exp="false" data-suffix="" data-full="true">0</div>
+                    <div class="result-desc">${t.heartbeatsDesc}</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">${t.issOrbits}</div>
+                    <div class="result-value" data-target="${issOrbitsEnd}" data-exp="false" data-suffix="">0</div>
+                    <div class="result-desc">${issOrbitsDesc}</div>
+                </div>
+            `;
+            
+            const SPEED_OF_LIGHT = 299792458;
+            const LIGHT_YEAR_KM = 9.460730472e12;
+            
+            const lightDistanceKm = ageSeconds * (SPEED_OF_LIGHT / 1000);
+            const lightDistanceLy = lightDistanceKm / LIGHT_YEAR_KM;
+            
+            const stars = [
+                { name: "Проксима Центавра", dist: 4.24, nameEn: "Proxima Centauri" },
+                { name: "Сириус", dist: 8.6, nameEn: "Sirius" },
+                { name: "Эпсилон Эридана", dist: 10.5, nameEn: "Epsilon Eridani" },
+                { name: "Процион", dist: 11.4, nameEn: "Procyon" },
+                { name: "Альтаир", dist: 16.7, nameEn: "Altair" },
+                { name: "Вега", dist: 25.0, nameEn: "Vega" },
+                { name: "Арктур", dist: 36.7, nameEn: "Arcturus" },
+                { name: "Капелла", dist: 42.9, nameEn: "Capella" }
+            ];
+
+            let reachedStar = null;
+            for (let i = stars.length - 1; i >= 0; i--) {
+                if (lightDistanceLy >= stars[i].dist) {
+                    reachedStar = stars[i];
+                    break;
+                }
+            }
+
+            let lightReachText = "";
+            let lightReachDescText = "";
+
+            if (!reachedStar) {
+                lightReachText = currentLang === 'ru' ? "Окрестности Солнечной системы" : "Solar System vicinity";
+                lightReachDescText = currentLang === 'ru' ? "Свет от вашего рождения ещё не достиг ближайших звёздных систем." : "Light from your birth hasn't reached the nearest star systems yet.";
+            } else if (lightDistanceLy > 100) {
+                lightReachText = currentLang === 'ru' ? "Далеко за пределами ближайших звёзд" : "Far beyond nearby stars";
+                lightReachDescText = currentLang === 'ru' ? "Свет преодолел более 100 световых лет, покинув окрестности Солнца." : "Light has traveled over 100 light years, leaving the Sun's vicinity.";
+            } else {
+                lightReachText = currentLang === 'ru' ? `Достиг звезды ${reachedStar.name}` : `Reached ${reachedStar.nameEn} star`;
+                lightReachDescText = currentLang === 'ru' ? `Свет от вашего первого вдоха достиг этой звезды, находящейся на расстоянии ${reachedStar.dist} св. лет.` : `Light from your first breath reached this star, located ${reachedStar.dist} light years away.`;
+            }
+
+            const moonDistanceKm = 384400;
+            const moonTrips = lightDistanceKm / (moonDistanceKm * 2);
+
+            document.getElementById('lightResults').innerHTML = `
+                <div class="result-item">
+                    <div class="result-label">${t.lightKm}</div>
+                    <div class="result-value" data-target="${lightDistanceKm}" data-exp="true" data-suffix="">0</div>
+                    <div class="result-desc">${t.lightKmDesc}</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">${t.lightYears}</div>
+                    <div class="result-value">${lightDistanceLy < 0.01 ? '< 0.01' : lightDistanceLy.toFixed(3)}</div>
+                    <div class="result-desc">${currentLang === 'ru' ? 'световых лет' : 'light years'}</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">${t.lightMoonTrips}</div>
+                    <div class="result-value" data-target="${moonTrips}" data-exp="false" data-suffix="">0</div>
+                    <div class="result-desc">${t.lightMoonTripsDesc}</div>
+                </div>
+                <div class="result-item" style="grid-column: 1 / -1; border-left-color: #ec4899;">
+                    <div class="result-label">${t.lightReach}</div>
+                    <div class="result-value" style="color: #ec4899; font-size: 1.1rem;">${lightReachText}</div>
+                    <div class="result-desc">${lightReachDescText}</div>
+                </div>
+            `;
+            
+            const atomsTotal = (effectiveWeight / 70) * 7e27;
+            const waterMolecules = (effectiveWeight * waterPercent / 0.018) * 6.022e23;
+            
+            document.getElementById('atomResults').innerHTML = `
+                <div class="result-item">
+                    <div class="result-label">${t.atomsTotal}</div>
+                    <div class="result-value" data-target="${atomsTotal}" data-exp="true" data-suffix="">0</div>
+                    <div class="result-desc">${t.atomsTotalDesc}</div>
+                </div>
+                <div class="result-item" style="border-left-color: #f59e0b;">
+                    <div class="result-label">${t.atomsStar}</div>
+                    <div class="result-value">93%</div>
+                    <div class="result-desc">${t.atomsStarDesc}</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">${t.atomsWater}</div>
+                    <div class="result-value" data-target="${waterMolecules}" data-exp="true" data-suffix="">0</div>
+                    <div class="result-desc">${t.atomsWaterDesc}</div>
+                </div>
+            `;
+            
+            const metabolicRateWatts = effectiveWeight * 1.1;
+            const heatProduced = metabolicRateWatts * ageSeconds; 
+            const entropy = heatProduced / 310;
+            
+            const ICE_MELTING_ENERGY = 334000 + 4180 * 37;
+            const WATER_VAPORIZATION_ENERGY = 4180 * (100 - 37) + 2256000;
+            
+            const iceEquiv = heatProduced / ICE_MELTING_ENERGY;
+            const oceanEquiv = heatProduced / WATER_VAPORIZATION_ENERGY;
+            
+            document.getElementById('entropyResults').innerHTML = `
+                <div class="result-item">
+                    <div class="result-label">${t.entropyTotal}</div>
+                    <div class="result-value" data-target="${entropy}" data-exp="true" data-suffix="">0</div>
+                    <div class="result-desc">${t.entropyTotalDesc}</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">${t.entropyIce}</div>
+                    <div class="result-value" data-target="${iceEquiv}" data-exp="false" data-suffix="">0</div>
+                    <div class="result-desc">${t.entropyIceDesc}</div>
+                </div>
+                <div class="result-item">
+                    <div class="result-label">${t.entropyOcean}</div>
+                    <div class="result-value" data-target="${oceanEquiv}" data-exp="false" data-suffix="">0</div>
+                    <div class="result-desc">${t.entropyOceanDesc}</div>
+                </div>
+            `;
+
+            const timeDilationSec = ageSeconds * 6.94e-10;
+            const dilationMs = timeDilationSec * 1000;
+            const dilationVal = dilationMs < 1000 ? dilationMs : timeDilationSec;
+            const dilationUnit = dilationMs < 1000 
+                ? (currentLang === 'ru' ? ' мс' : ' ms') 
+                : (currentLang === 'ru' ? ' сек' : ' s');
+            const dilationDisplay = dilationMs < 1000 ? dilationMs.toFixed(1) : timeDilationSec.toFixed(2);
+
+            const neutrinoFluxPerSec = 0.7 * 6.5e14; 
+            const totalNeutrinos = ageSeconds * neutrinoFluxPerSec;
+
+            const earthRotationSpeedKms = 0.465;
+            const distanceRotatedKm = ageSeconds * earthRotationSpeedKms;
+            const auDistanceKm = 149.6e6;
+            const auTrips = distanceRotatedKm / auDistanceKm;
+
+            const cosmicSpeedKms = 370;
+            const cosmicDistanceKm = ageSeconds * cosmicSpeedKms;
+            const LIGHT_DAY_KM = 299792.458 * 86400; 
+            const cosmicLightDays = cosmicDistanceKm / LIGHT_DAY_KM;
+
+            const C = 299792458;
+            const restEnergyJ = effectiveWeight * C * C;
+            const TNT_GIGATON_J = 4.184e18;
+            const restEnergyGigatons = restEnergyJ / TNT_GIGATON_J;
+
+            const plutoDistanceKm = 5.9e9;
+            const spacePlutoTrips = cosmicDistanceKm / plutoDistanceKm;
+
+            document.getElementById('cosmicFactsResults').innerHTML = `
+                <div class="result-item" style="border-left-color: #8b5cf6;">
+                    <div class="result-label">${t.timeDilation}</div>
+                    <div class="result-value" data-target="${dilationVal}" data-exp="false" data-suffix="${dilationUnit}">0</div>
+                    <div class="result-desc">${t.timeDilationDesc.replace('{x}', `<span style="color:#fff; font-weight:700;">${dilationDisplay}${dilationUnit}</span>`)}</div>
+                </div>
+                <div class="result-item" style="border-left-color: #06b6d4;">
+                    <div class="result-label">${t.neutrinos}</div>
+                    <div class="result-value" data-target="${totalNeutrinos}" data-exp="true" data-suffix="">0</div>
+                    <div class="result-desc">${t.neutrinosDesc.replace('{x}', totalNeutrinos.toExponential(2))}</div>
+                </div>
+                <div class="result-item" style="border-left-color: #10b981;">
+                    <div class="result-label">${t.earthRotation}</div>
+                    <div class="result-value" data-target="${auTrips}" data-exp="false" data-suffix="">0</div>
+                    <div class="result-desc">${t.earthRotationDesc.replace('{x}', auTrips.toFixed(2))}</div>
+                </div>
+                <div class="result-item" style="border-left-color: #f59e0b;">
+                    <div class="result-label">${t.cosmicSpeed}</div>
+                    <div class="result-value" data-target="${cosmicLightDays}" data-exp="false" data-suffix="">0</div>
+                    <div class="result-desc">${t.cosmicSpeedDesc.replace('{x}', cosmicLightDays.toFixed(1))}</div>
+                </div>
+                <div class="result-item" style="border-left-color: #ec4899;">
+                    <div class="result-label">${t.energyMass}</div>
+                    <div class="result-value" data-target="${restEnergyGigatons}" data-exp="false" data-suffix="">0</div>
+                    <div class="result-desc">${t.energyDesc}</div>
+                </div>
+                <div class="result-item" style="border-left-color: #3b82f6;">
+                    <div class="result-label">${t.spaceTravel}</div>
+                    <div class="result-value" data-target="${spacePlutoTrips}" data-exp="false" data-suffix="">0</div>
+                    <div class="result-desc">${t.spaceDesc} (${t.plutoTripsText.replace('{x}', spacePlutoTrips.toFixed(1))})</div>
+                </div>
+            `;
+			
+            const renewalCycles = ageYears / 7;
+            const remainingPercent = 100 * Math.pow(0.5, renewalCycles);
+            const remainingDisplay = remainingPercent < 0.01 ? '< 0.01' : remainingPercent.toFixed(2);
+
+            const driftMeters = ageYears * 0.03;
+            const footballFields = driftMeters / 105;
+
+            const cellsCount = (effectiveWeight / 70) * 30e12;
+            const dnaLengthKm = (cellsCount * 2) / 1000;
+            const dnaLengthBillionKm = dnaLengthKm / 1e9;
+            const plutoRoundTripKm = 5.9e9 * 2;
+            const plutoTripsDna = dnaLengthKm / plutoRoundTripKm;
+
+            document.getElementById('earthTimeResults').innerHTML = `
+                <div class="result-item" style="border-left-color: #8b5cf6;">
+                    <div class="result-label">${t.originalMatter}</div>
+                    <div class="result-value" data-target="${remainingPercent}" data-exp="false" data-suffix="%">0</div>
+                    <div class="result-desc">${t.originalMatterDesc.replace('{x}', renewalCycles.toFixed(1)).replace('{y}', remainingDisplay)}</div>
+                </div>
+                <div class="result-item" style="border-left-color: #10b981;">
+                    <div class="result-label">${t.continentalDrift}</div>
+                    <div class="result-value" data-target="${driftMeters}" data-exp="false" data-suffix=" ">0</div>
+                    <div class="result-desc">${t.continentalDriftDesc.replace('{x}', driftMeters.toFixed(1)).replace('{y}', footballFields.toFixed(1))}</div>
+                </div>
+                <div class="result-item" style="border-left-color: #ec4899;">
+                    <div class="result-label">${t.dnaLength}</div>
+                    <div class="result-value" data-target="${dnaLengthBillionKm}" data-exp="false" data-suffix=" ">0</div>
+                    <div class="result-desc">${t.dnaLengthDesc.replace('{x}', dnaLengthBillionKm.toFixed(1)).replace('{y}', plutoTripsDna.toFixed(1))}</div>
+                </div>
+            `;
+            
+            setTimeout(() => {
+                document.querySelectorAll('[data-target]').forEach(el => {
+                    const target = parseFloat(el.getAttribute('data-target'));
+                    const isExp = el.getAttribute('data-exp') === 'true';
+                    const suffix = el.getAttribute('data-suffix') || '';
+                    animateValue(el, 0, target, 2000, isExp, suffix);
+                });
+            }, 300);
+        }
+        
+        initGlitterCanvas();
+        document.getElementById('birthdate').max = new Date().toISOString().split('T')[0];
+		
+        const titleElement = document.querySelector('h1');
+        let beaverTimeout;
+
+        titleElement.style.cursor = 'pointer';
+        titleElement.addEventListener('click', () => {
+            const existingBeaver = titleElement.querySelector('.beaver-easter-egg');
+            if (existingBeaver) {
+                clearTimeout(beaverTimeout);
+                existingBeaver.classList.remove('show');
+                setTimeout(() => existingBeaver.remove(), 400);
+            }
+
+            const beaverSvg = document.createElement('div');
+            beaverSvg.className = 'beaver-easter-egg';
+            beaverSvg.innerHTML = `
+                <svg viewBox="0 20 100 100" width="55" height="55">
+                    <circle cx="25" cy="30" r="12" fill="#5D4037"/>
+                    <circle cx="75" cy="30" r="12" fill="#5D4037"/>
+                    <circle cx="50" cy="55" r="35" fill="#795548"/>
+                    <circle cx="38" cy="45" r="4" fill="#000"/>
+                    <circle cx="62" cy="45" r="4" fill="#000"/>
+                    <ellipse cx="50" cy="55" rx="8" ry="6" fill="#3E2723"/>
+                    <rect x="43" y="62" width="6" height="8" fill="#FFF" rx="1"/>
+                    <rect x="51" y="62" width="6" height="8" fill="#FFF" rx="1"/>
+                </svg>
+            `;
+            
+            titleElement.appendChild(beaverSvg);
+            
+            requestAnimationFrame(() => {
+                beaverSvg.classList.add('show');
+            });
+
+            beaverTimeout = setTimeout(() => {
+                beaverSvg.classList.remove('show');
+                setTimeout(() => beaverSvg.remove(), 400);
+            }, 5000);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Указываем путь к карте сайта
+Sitemap: https://your-domain.infinityfreeapp.com/sitemap.xml
