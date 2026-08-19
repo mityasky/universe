@@ -2,11 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://your-domain.infinityfreeapp.com/</loc>
+    <loc>https://mityasky.github.io/universe/</loc>
     <!-- Сообщаем Google, что на этом URL есть русская и английская версии -->
-    <xhtml:link rel="alternate" hreflang="ru" href="https://your-domain.infinityfreeapp.com/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://your-domain.infinityfreeapp.com/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://your-domain.infinityfreeapp.com/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://mityasky.github.io/universe/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://mityasky.github.io/universe/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://mityasky.github.io/universe/" />
     <lastmod>2024-05-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
